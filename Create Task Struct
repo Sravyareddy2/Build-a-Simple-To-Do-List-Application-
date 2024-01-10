@@ -1,0 +1,22 @@
+import Foundation
+
+enum Priority: String {
+    case low = "Low"
+    case medium = "Medium"
+    case high = "High"
+}
+
+enum TaskStatus: String {
+    case new = "New"
+    case inProgress = "In Progress"
+    case completed = "Completed"
+}
+
+struct Task: Codable {
+    var title: String
+    var description: String
+    var dueDate: Date
+    var priority: Priority
+    var category: String
+    var status: TaskStatus
+}
