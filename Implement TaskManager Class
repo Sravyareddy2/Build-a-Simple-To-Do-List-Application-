@@ -1,0 +1,38 @@
+import Foundation
+
+class TaskManager {
+    static let shared = TaskManager()
+    
+    private var tasks: [Task] = []
+    
+    private init() {
+        loadTasksFromLocalStorage()
+    }
+    
+    func addTask(_ task: Task) {
+        tasks.append(task)
+        saveTasksToLocalStorage()
+    }
+    
+    func getAllTasks() -> [Task] {
+        return tasks
+    }
+    
+    // Add other methods for updating task status, priority, etc.
+    
+    private func saveTasksToLocalStorage() {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(tasks) {
+            UserDefaults.standard.set(encoded, forKey: "tasks")
+        }
+    }
+    
+    private func loadTasksFromLocalStorage() {
+        if let data = UserDefaults.standard.data(forKey: "tasks") {
+            let decoder = JSONDecoder()
+            if let decodedTasks = try? decoder.decode([Task].self, from: data) {
+                tasks = decodedTasks
+            }
+        }
+    }
+}
