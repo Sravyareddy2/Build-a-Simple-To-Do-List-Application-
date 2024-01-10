@@ -1,0 +1,47 @@
+import UIKit
+
+class TaskViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+    @IBOutlet weak var tableView: UITableView!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+
+    // MARK: - Table View
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return TaskManager.shared.getAllTasks().count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath)
+
+        let task = TaskManager.shared.getAllTasks()[indexPath.row]
+        cell.textLabel?.text = task.title
+        cell.detailTextLabel?.text = "Due: \(formattedDate(task.dueDate)) - Priority: \(task.priority.rawValue) - Status: \(task.status.rawValue)"
+
+        return cell
+    }
+
+    // MARK: - Actions
+
+    @IBAction func addTask(_ sender: UIBarButtonItem) {
+        // Implement task creation and add it to the tasks array
+        // ...
+
+        tableView.reloadData()
+    }
+
+    // Add other actions for updating task status, priority, etc.
+    // ...
+
+    // Helper function to format date
+    func formattedDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy HH:mm"
+        return formatter.string(from: date)
+    }
+}
